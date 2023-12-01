@@ -1,7 +1,7 @@
 const BASE_API_URL = 'https://swapi.dev/api/people';
 const BASE_IMAGE_URL = 'https://starwars-visualguide.com/assets/img/characters/';
 let characters = [];
-let pageNumber = 4;
+let pageNumber = 1;
 const mainPage = document.getElementById('main-page');
 const btnPre = document.querySelector('.previous');
 const btnNxt = document.querySelector('.next');
@@ -80,15 +80,18 @@ const getCharacterFilms = async (urls) => {
     }
 };
 
-const openModel = async (event) => {
+const openModel = async (e) => {
     model.style.display = 'block';
     loader.style.display = 'block';
 
     const [name, CharacterImg, birth, gender, species, homeworld, films] = [...modelContainer];
-    const index = parseInt(event.target.id);
-    console.log(characters);
+    const index = parseInt(e.target.id) - 1;
+
+    console.log(index);
+    // console.log(characters);
+
     name.innerHTML = characters[index].name;
-    CharacterImg.src = getCharacterImage(index);
+    CharacterImg.src = getCharacterImage(index + 1);
     birth.innerHTML = `<b>Birth Year</b>: ${characters[index].birth_year}`;
     gender.innerHTML = `<b>Gender</b>: ${characters[index].gender}`;
 
