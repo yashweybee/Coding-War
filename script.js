@@ -2,6 +2,8 @@ const BASE_API_URL = 'https://swapi.dev/api/people';
 const BASE_IMAGE_URL = 'https://starwars-visualguide.com/assets/img/characters/';
 let characters = [];
 let pageNumber = 1;
+const maxPage = 10;
+const imgExtention = 'jpg';
 const mainPage = document.getElementById('main-page');
 const btnPre = document.querySelector('.previous');
 const btnNxt = document.querySelector('.next');
@@ -14,13 +16,13 @@ const loader = document.querySelector('.loader');
 
 btnNxt.addEventListener('click', function () {
     pageNumber++;
-    if (pageNumber >= 10) {
+    if (pageNumber >= maxPage) {
         alert("Page not Exist");
         pageNumber--;
         return;
     }
-    characters = [];
-    init(pageNumber, characters);
+
+    btnClickRefresh(pageNumber, characters);
 })
 
 btnPre.addEventListener('click', function () {
@@ -31,14 +33,20 @@ btnPre.addEventListener('click', function () {
         return;
     }
     characters = [];
+    btnClickRefresh(pageNumber, characters);
+});
+
+const btnClickRefresh = function (pageNumber, characters) {
+    characters = [];
     init(pageNumber, characters);
-    console.log(pageNumber);
-})
+}
+
+
 
 const getCharacterImage = (index) => {
 
     const ind = index + ((pageNumber - 1) * characters.length);
-    const imgSrc = `${BASE_IMAGE_URL}${ind}.jpg`;
+    const imgSrc = `${BASE_IMAGE_URL}${ind}.${imgExtention}`;
     return imgSrc;
 };
 
@@ -50,7 +58,7 @@ const getCharacters = async (pageNumber, collection) => {
             collection.push(...data.results);
         });
     collection.forEach((character, index) => (character.id = index + 1));
-    console.log(collection);
+    // console.log(collection);
 };
 
 const getCharacterInfo = async (url) => {
@@ -87,7 +95,7 @@ const openModel = async (e) => {
     const [name, CharacterImg, birth, gender, species, homeworld, films] = [...modelContainer];
     const index = parseInt(e.target.id) - 1;
 
-    console.log(index);
+    // console.log(index);
     // console.log(characters);
 
     name.innerHTML = characters[index].name;
